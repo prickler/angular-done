@@ -1,0 +1,21 @@
+    .table {
+      width: 100%;
+      color: darkslategrey;
+      background-color: #99ccff;
+    }
+
+    .table, th, td, tr {
+      border: 3px solid #0066cc; 
+   }
+
+   .table th {
+     text-align: center;
+     background-color: #6666ff;
+   }
+
+   .filter {
+     font-size: 15px;
+     color: whitesmoke;
+     font-weight: bold;
+   }
+

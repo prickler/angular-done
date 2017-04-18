@@ -1,0 +1,19 @@
+<div id="rentModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{movie.name}} </h4>
+      </div>
+      <div class="modal-body">
+        <label>Borrower name:</label><input type="text" #borrowerName /><br>
+        <label>Borrower surname:</label><input type="text" #borrowerSurname /><br>
+        <label> Date of rent:</label><input type="text" #dateOfRent />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="rent(movie, borrowerName.value, borrowerSurname.value, dateOfRent.value); borrowerName.value = ''; borrowerSurname.value = ''; dateOfRent.value = ''"
+          data-dismiss="modal">Rent</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>

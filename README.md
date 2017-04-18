@@ -1,2 +1,2 @@
-# angular-done
-last version vhs rental service
+# starter-kit-angular-demo
+Demo of Starter Kit's AngularJS part.

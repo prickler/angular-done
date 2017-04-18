@@ -1,0 +1,77 @@
+<div>
+  <div class="filter">Filter by title: <input class="text" type='text' [(ngModel)]='term' />
+  </div>
+</div>
+<br>
+<button class="btn btn-default" (click)="sortBy('name')">Sort By Title</button>
+<button class="btn btn-default" (click)="sortBy('id')">Sort By ID</button>
+<br>
+<br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Director</th>
+      <th>Date</th>
+      <th>Rented By</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let movie of (movies | rented | sort: sortType | filter: term)">
+      <td id="id">{{ movie.name }}</td>
+      <td id="about">{{ movie.director }}</td>
+      <td id="date">{{ movie.date }}</td>
+      <td>{{ movie.personName }}</td>
+      <td id="options">
+        <button type="button" class="buttonModal" (click)="onSelect(movie)" data-toggle="modal" data-target="#detailsModal">Details</button>
+        <button type="button" class="buttonModal" (click)="onSelect(movie)" data-toggle="modal" data-target="#returnModal">Return</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- detailsModal -->
+<div id="detailsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Rented details</h4>
+      </div>
+      <div class="modal-body">
+        <p>Id: {{selectedMovie.id}}</p>
+        <p>Borrower Name: {{selectedMovie.personName}}</p>
+        <p>Borrower Surname: {{selectedMovie.personSurname}}</p>
+        <p>Date of rent: {{selectedMovie.dateOfRent}}</p>
+        <p><img src={{selectedMovie.cover}} style="width:300px;height:400px;"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- returnModal -->
+<div class="modal fade" id="returnModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Return and pay</h4>
+        <div class="modal-body">
+          <label><input name="unrewinded" type="checkbox" class="form-control" [(ngModel)]="unrewinded" /> Extra payment for unrewind vhs</label>
+          <label><input name="delay" type="checkbox" class="form-control" [(ngModel)]="delay" /> Extra payment for delay</label>
+          <label><input name="broken" type="checkbox" class="form-control" [(ngModel)]="broken" /> Extra payment for broken vhs</label>
+          <h6>Total payment: {{calculatePayment(delay, unrewinded, broken)}} $</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" (click)="return(selectedMovie)" data-dismiss="modal">Return</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

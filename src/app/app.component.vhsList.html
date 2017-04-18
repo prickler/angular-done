@@ -1,0 +1,160 @@
+<div>
+  <div class="filter">Filter by title:
+    <input type='text' [(ngModel)]='term' />
+  </div>
+</div>
+<br>
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">Add movie</button>
+<button class="btn btn-default" (click)="sortBy('name')">Sort By Title</button>
+<button class="btn btn-default" (click)="sortBy('id')">Sort By ID</button>
+<br>
+<br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th id="test">Id</th>
+      <th>Title</th>
+      <th>Director</th>
+      <th>Date</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let movie of (movies | free | sort: sortType | filter: term)">
+      <td class="id" id="id">{{ movie.id }}</td>
+      <td id="name">{{ movie.name }}</td>
+      <td id="about">{{ movie.director }}</td>
+      <td id="date">{{ movie.date }}</td>
+      <td id="options">
+        <button type="button" class="btn btn-default" (click)="onSelect(movie)" data-toggle="modal" data-target="#detailsModal">Details</button>
+        <button type="button" class="btn btn-default" (click)="onSelect(movie)" data-toggle="modal" data-target="#editModal">Edit</button>
+        <button type="button" class="btn btn-default" (click)="onSelect(movie)" data-toggle="modal" data-target="#rentModal">Rent</button>
+        <button type="button" class="btn btn-default" (click)="delete(movie); $event.stopPropagation()">X</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-borrow [movie]="selectedMovie"></app-borrow>
+
+<!-- detailsModal -->
+<div id="detailsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Details {{selectedMovie.name}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Id: {{selectedMovie.id}}</p>
+        <p>Director: {{selectedMovie.director}}</p>
+        <p>Date: {{selectedMovie.date}}</p>
+        <p><img src={{selectedMovie.cover}} style="width:300px;height:400px;"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- editModal -->
+<div id="editModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{selectedMovie.name}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="name">Tittle</label>
+          <input type="text" class="form-control" id="name" required [(ngModel)]="selectedMovie.name" name="name">Written
+          text: {{selectedMovie.name}}
+        </div>
+        <div class="form-group">
+          <label for="director">Director</label>
+          <input type="text" class="form-control" id="director" required [(ngModel)]="selectedMovie.director" name="director">Written
+          text: {{selectedMovie.director}}
+        </div>
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input type="text" class="form-control" id="date" required [(ngModel)]="selectedMovie.date" name="date">Written
+          text: {{selectedMovie.date}}
+        </div>
+        <div class="form-group">
+          <label for="cover">Url</label>
+          <input type="text" class="form-control" id="cover" required [(ngModel)]="selectedMovie.cover" name="cover"> Written
+          text: {{selectedMovie.cover}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- addModal -->
+<div>
+  <div>
+    <div id="addModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <h1>Add new movie</h1>
+            <form (ngSubmit)="onSubmitCreate()" #movieForm="ngForm">
+              <div class="form-group">
+                <label for="name">Movie title</label>
+                <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
+                <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                  Title is required
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="director">Movie director</label>
+                <input type="text" class="form-control" id="director" required [(ngModel)]="model.director" name="director" #director="ngModel">
+                <div [hidden]="director.valid || director.pristine" class="alert alert-danger">
+                  Director is required
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="date">Movie date</label>
+                <input type="text" class="form-control" id="date" required [(ngModel)]="model.date" name="date" #date="ngModel">
+                <div [hidden]="date.valid || date.pristine" class="alert alert-danger">
+                  Date is required
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-group">
+                  <label for="cover">Movie cover</label>
+                  <input type="text" class="form-control" id="cover" [(ngModel)]="model.cover" name="cover">
+                </div>
+                <label for="personName">Movie personName</label>
+                <input type="text" class="form-control" id="personName" [(ngModel)]="model.personName" name="personName">
+              </div>
+              <div class="form-group">
+                <label for="personSurname">Movie personSurname</label>
+                <input type="text" class="form-control" id="personSurname" [(ngModel)]="model.personSurname" name="personSurname">
+              </div>
+              <div class="form-group">
+                <label for="dateOfRent">Movie dateOfRent</label>
+                <input type="text" class="form-control" id="dateOfRent" [(ngModel)]="model.dateOfRent" name="dateOfRent">
+              </div>
+              <button type="submit" class="btn btn-success" [disabled]="!movieForm.form.valid">Add Movie</button>
+              <button type="button" class="btn btn-default" (click)="newMovie(); movieForm.reset()">Clear Form</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
